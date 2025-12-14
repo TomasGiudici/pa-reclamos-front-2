@@ -1,5 +1,139 @@
 # Lista de tereas front
 
+## 📁 Arquitectura de Carpetas
+
+### Estructura General
+
+La aplicación está organizada siguiendo una arquitectura basada en **features**. Las features principales se encuentran dentro de `/src/features/`, mientras que el **código compartido o global** va directamente en `/src/`.
+
+```
+src/
+├── components/            # Componentes React globales/compartidos
+├── constants/             # Constantes globales
+├── hooks/                 # Custom hooks globales
+├── services/              # Servicios API globales
+├── stores/                # Estado global compartido
+├── types/                 # Tipos TypeScript globales
+├── utils/                 # Utilidades y helpers globales
+└── features/
+    ├── auth/              # Autenticación y registro
+    ├── dashboard/         # Dashboard principal (ver estructura abajo)
+    └── [otras-features]/
+```
+
+### Dashboard - Estructura por Tipo de Usuario
+
+El **dashboard** es la parte principal de la aplicación y está ubicado en `/src/features/dashboard/`. 
+
+Como el contenido del dashboard **cambia según el tipo de usuario** (cliente, empleado, administrador), se ha separado en **tres carpetas independientes** dentro de `dashboard/`:
+
+```
+src/features/dashboard/
+├── cliente/          # Dashboard para usuarios tipo CLIENTE
+├── empleado/         # Dashboard para usuarios tipo EMPLEADO
+└── admin/            # Dashboard para usuarios tipo ADMINISTRADOR
+```
+
+### Estructura Interna de Cada Carpeta de Dashboard
+
+**Cada una de estas tres carpetas** (`cliente/`, `empleado/`, `admin/`) **sigue la misma arquitectura estándar**:
+
+```
+dashboard/[tipo-usuario]/
+├── components/       # Componentes React específicos de este dashboard
+├── hooks/            # Custom hooks específicos
+├── services/         # Servicios API y lógica de negocio
+├── stores/           # Estado global (Zustand, Redux, etc.)
+├── constants/        # Constantes y configuraciones
+├── types/            # Tipos TypeScript específicos
+└── utils/            # Utilidades y helpers
+```
+
+### Ejemplo de Estructura Completa
+
+```
+src/features/dashboard/
+├── cliente/
+│   ├── components/
+│   │   ├── proyectos/
+│   │   │   ├── proyecto-list.tsx
+│   │   │   ├── proyecto-form.tsx
+│   │   │   └── proyecto-card.tsx
+│   │   ├── reclamos/
+│   │   │   ├── reclamo-list.tsx
+│   │   │   └── reclamo-detail.tsx
+│   │   └── dashboard-layout.tsx
+│   ├── hooks/
+│   │   ├── use-proyectos.ts
+│   │   └── use-reclamos.ts
+│   ├── services/
+│   │   ├── proyecto-service.ts
+│   │   └── reclamo-service.ts
+│   ├── stores/
+│   │   └── dashboard-store.ts
+│   ├── constants/
+│   │   └── routes.ts
+│   └── types/
+│       └── dashboard.types.ts
+│
+├── empleado/
+│   ├── components/
+│   │   ├── reclamos/
+│   │   ├── clientes/
+│   │   └── dashboard-layout.tsx
+│   ├── hooks/
+│   ├── services/
+│   ├── stores/
+│   ├── constants/
+│   └── types/
+│
+└── admin/
+    ├── components/
+    │   ├── usuarios/
+    │   ├── areas/
+    │   └── dashboard-layout.tsx
+    ├── hooks/
+    ├── services/
+    ├── stores/
+    ├── constants/
+    └── types/
+```
+
+### ⚠️ Reglas Importantes
+
+1. **Separación por tipo de usuario**: 
+   - Si trabajas en funcionalidad para **CLIENTES** → trabaja en `/src/features/dashboard/cliente/`
+   - Si trabajas en funcionalidad para **EMPLEADOS** → trabaja en `/src/features/dashboard/empleado/`
+   - Si trabajas en funcionalidad para **ADMINISTRADORES** → trabaja en `/src/features/dashboard/admin/`
+
+2. **Código compartido/global**: 
+   - El código compartido entre diferentes features o tipos de usuario va **directamente en `/src/`**
+   - Componentes globales → `/src/components/`
+   - Constantes globales → `/src/constants/`
+   - Hooks globales → `/src/hooks/`
+   - Servicios globales → `/src/services/`
+   - Stores globales → `/src/stores/`
+   - Tipos globales → `/src/types/`
+   - Utilidades globales → `/src/utils/`
+
+3. **Estructura consistente**: 
+   - **Siempre** respeta la estructura: `components/`, `hooks/`, `services/`, `stores/`, `constants/`, `types/`, `utils/`
+   - Si no necesitas alguna de estas carpetas, simplemente no la crees, pero si la creas, sigue el patrón
+
+4. **Nombres de archivos**: 
+   - Usa kebab-case para nombres de archivos: `proyecto-list.tsx`, `use-proyectos.ts`
+   - Usa PascalCase para componentes: `ProyectoList`, `ReclamoDetail`
+
+### 📍 Dónde Trabajar Según la Tarea
+
+- **Tareas de Cliente** → `/src/features/dashboard/cliente/`
+- **Tareas de Empleado** → `/src/features/dashboard/empleado/`
+- **Tareas de Administrador** → `/src/features/dashboard/admin/`
+- **Autenticación/Registro** → `/src/features/auth/`
+- **Código compartido/global** → `/src/[carpeta]` (components, constants, hooks, services, stores, types, utils)
+
+---
+
 ## Clientes:
 El cliente, en su dashboard va a tener proyectos y reclamos
 
@@ -298,7 +432,7 @@ export interface Area {
   - Links navegables a proyectos y reclamos
   - Timeline o resumen de actividad reciente
 
-## Gestión de Áreas (Administrador)
+## Gestión de Áreas (Administrador) - **Salvador**
 
 - [] **CRUD de Áreas - Listar**
   - Vista general de áreas
@@ -347,7 +481,7 @@ export interface Area {
   - Confirmar eliminación
   - Eliminar en backend
 
-## Gestión de Usuarios (Administrador)
+## Gestión de Usuarios (Administrador) - **Salvador**
 
 - [] **Listar Usuarios**
   - Sección "Usuarios" en dashboard del administrador
@@ -372,7 +506,7 @@ export interface Area {
   - Modificar permisos asociados a cada rol
   - Los cambios deben afectar el acceso a funcionalidades del sistema
 
-## Seguridad y Autenticación
+## Seguridad y Autenticación - **Salvador**
 
 - [] **Protección de Rutas**
   - Implementar protección de rutas según rol del usuario
