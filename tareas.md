@@ -325,7 +325,7 @@ export interface Area {
   - Eliminar en backend
   - Actualizar lista
 
-## Gestión de Reclamos (Cliente)
+## Gestión de Reclamos (Cliente) - **Salvador**
 
 - `[x] Crear reclamo (falta actualizar)`
   - **Completar**: Actualizar formulario completo según requerimientos
@@ -533,7 +533,7 @@ export interface Area {
   - Permitir crear, editar y eliminar notas
   - Formato de texto enriquecido (opcional)
 
-## Reportes y Dashboard
+## Reportes y Dashboard - **Salvador**
 
 - [] **Reportes de Reclamos (Empleado)**
   - Sección de reportes para empleados
@@ -555,7 +555,7 @@ export interface Area {
   - Métricas: cantidad de reclamos por estado, tiempo de resolución, etc.
 
 
-## Consultas y Relaciones
+## Consultas y Relaciones - **Salvador**
 
 - [] **Consultar relación Cliente–Proyecto–Reclamo (Empleado)**
   - Desde el perfil del cliente: ver proyectos y reclamos asociados
