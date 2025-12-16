@@ -1,7 +1,10 @@
+import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/stores/auth"
+import { saveAuthToken } from "@/utils/auth-storage"
 import { useRegisterMutation } from "./useAuthMutations"
 
 export function useRegisterForm() {
+  const router = useRouter()
   const { mutateAsync, isPending, error } = useRegisterMutation()
   const setAuth = useAuthStore((state) => state.setAuth)
 
@@ -17,7 +20,9 @@ export function useRegisterForm() {
       try {
         const data = await mutateAsync({ email, contraseña, nombre, telefono })
         setAuth(data)
-        localStorage.setItem("access_token", data.access_token)
+        saveAuthToken(data.access_token)
+        // Redirigir a la página principal después de registro exitoso
+        router.push("/")
       } catch {
         // Error is handled by TanStack Query
       }

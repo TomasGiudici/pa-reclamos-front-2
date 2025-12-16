@@ -1,33 +1,46 @@
 'use client'
+
 import { useMutation } from "@tanstack/react-query"
+import { api } from "@/lib/api"
 import { useAuthStore } from "@/stores/auth"
-import type {
-  LoginCredentials,
-  RegisterCredentials,
-} from "../services/authService"
-import { authApi } from "../services/authService"
+import { saveAuthToken } from "@/utils/auth-storage"
 import type { AuthData } from "../types/auth"
+
+export interface LoginCredentials {
+  email: string
+  contraseña: string
+}
+
+export interface RegisterCredentials {
+  email: string
+  contraseña: string
+  nombre: string
+  telefono: string
+}
 
 /**
  * Hook for login mutation using TanStack Query
+ * Usa la API global: api.auth.login
  */
 export function useLoginMutation() {
   const setAuth = useAuthStore((state) => state.setAuth)
 
   return useMutation<AuthData, Error, LoginCredentials>({
-    mutationFn: (credentials) => authApi.login.call(credentials),
+    mutationFn: (credentials) => api.auth.login(credentials),
     onSuccess: (data) => {
       setAuth(data)
-      localStorage.setItem("access_token", data.access_token)
+      saveAuthToken(data.access_token)
     },
   })
 }
 
 /**
  * Hook for register mutation using TanStack Query
+ * Usa la API global: api.auth.registerCliente
  */
 export function useRegisterMutation() {
   return useMutation<AuthData, Error, RegisterCredentials>({
-    mutationFn: (credentials) => authApi.register.call(credentials),
+    mutationFn: (credentials) => api.auth.registerCliente(credentials),
   })
 }
+
