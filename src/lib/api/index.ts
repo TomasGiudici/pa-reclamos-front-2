@@ -8,7 +8,7 @@
  * pero para el deadline esta capa única es suficiente y limpia.
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_UR
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 if (!BASE_URL) {
   // En desarrollo es útil ver esto si la env var no está configurada.
