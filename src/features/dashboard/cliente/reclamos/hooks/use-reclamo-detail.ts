@@ -50,19 +50,10 @@ function mapApiStatus(apiStatus: string) {
 
 export function useReclamoDetail(reclamoId: string) {
   const token = useAuthStore((state) => state.auth?.access_token)
-  const hasHydrated = useAuthStore((state) => state._hasHydrated)
-
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'use-reclamo-detail.ts:52', message: 'useReclamoDetail hook called', data: { reclamoId, hasToken: !!token, tokenValue: token?.substring(0, 10), hasHydrated }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'H1,H2,H5' }) }).catch(() => { });
-  // #endregion
 
   const reclamoQuery = useQuery({
     queryKey: ["reclamo", reclamoId],
     queryFn: async () => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'use-reclamo-detail.ts:59', message: 'queryFn executing', data: { reclamoId, hasToken: !!token }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'H1,H2' }) }).catch(() => { });
-      // #endregion
-
       if (!token) throw new Error("No authentication token")
 
       try {
@@ -109,10 +100,6 @@ export function useReclamoDetail(reclamoId: string) {
     },
     enabled: !!token && !!reclamoId,
   })
-
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'use-reclamo-detail.ts:98', message: 'useQuery result', data: { enabled: !!token && !!reclamoId, hasToken: !!token, hasReclamoId: !!reclamoId, reclamoId, isLoading: reclamoQuery.isLoading, isFetching: reclamoQuery.isFetching, status: reclamoQuery.status }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'H1,H2,H4' }) }).catch(() => { });
-  // #endregion
 
   return reclamoQuery
 }

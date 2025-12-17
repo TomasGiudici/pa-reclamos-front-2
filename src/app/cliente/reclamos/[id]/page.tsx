@@ -7,12 +7,6 @@ interface ReclamoDetailPageProps {
 }
 
 export default async function ReclamoDetailPage({ params }: ReclamoDetailPageProps) {
-  // #region agent log
-  if (typeof window !== 'undefined') {
-    fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'page.tsx:9',message:'ReclamoDetailPage rendering',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'H2'})}).catch(()=>{});
-  }
-  // #endregion
-
   const { id } = await params
 
   return (

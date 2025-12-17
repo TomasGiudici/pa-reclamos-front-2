@@ -1,6 +1,6 @@
 "use client"
 
-import { formatDate, formatDateTime } from "@/helpers/format"
+import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "../constants/claim-options"
 import { useCambioEstado } from "../hooks/use-cambio-estado"
 import { useReclamoDetail } from "../hooks/use-reclamo-detail"
@@ -23,10 +23,6 @@ const PRIORITY_COLORS: Record<string, string> = {
 }
 
 export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'reclamo-detail.tsx:25', message: 'ReclamoDetail component rendering', data: { reclamoId }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'H3' }) }).catch(() => { });
-  // #endregion
-
   const {
     data: reclamo,
     isLoading: reclamoLoading,
@@ -37,10 +33,6 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
     isLoading: cambiosLoading,
     error: cambiosError,
   } = useCambioEstado(reclamoId)
-
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/8f337eaa-df85-4f3b-bcd3-5878307ad2bc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'reclamo-detail.tsx:37', message: 'Hook results', data: { reclamoLoading, hasReclamo: !!reclamo, hasReclamoError: !!reclamoError, reclamoErrorMsg: reclamoError?.message }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'H1,H2,H3' }) }).catch(() => { });
-  // #endregion
 
   if (reclamoLoading) {
     return (
