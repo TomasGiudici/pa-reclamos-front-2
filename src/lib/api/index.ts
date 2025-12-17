@@ -199,6 +199,39 @@ export const api = {
         token,
       }),
 
+    filtros: (
+      params: {
+        estado?: string
+        fechaDesde?: string
+        fechaFin?: string
+        clienteId?: string
+      },
+      token: string,
+    ) => {
+      const queryParams = new URLSearchParams()
+      if (params.estado) queryParams.append("estado", params.estado)
+      if (params.fechaDesde) queryParams.append("fechaDesde", params.fechaDesde)
+      if (params.fechaFin) queryParams.append("fechaFin", params.fechaFin)
+      if (params.clienteId) queryParams.append("clienteId", params.clienteId)
+
+      return request(`/reclamo/filtros?${queryParams.toString()}`, {
+        method: "GET",
+        token,
+      })
+    },
+
+    tiempoPromedioResolucion: (token: string) =>
+      request("/reclamo/tiempo-promedio-resolucion", {
+        method: "GET",
+        token,
+      }),
+
+    cantidadPromedioResolucion: (token: string) =>
+      request("/reclamo/cantidad-promedio-resolucion", {
+        method: "GET",
+        token,
+      }),
+
     actualizarEstado: (
       id: string,
       data: Record<string, unknown>,

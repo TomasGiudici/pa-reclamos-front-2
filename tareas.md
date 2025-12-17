@@ -136,6 +136,74 @@ src/features/dashboard/
 
 ---
 
+## 🧭 Sistema de Navegación
+
+### Constantes de Navegación (`/src/constants/navigation.ts`)
+
+El sistema de navegación está centralizado en `src/constants/navigation.ts` y define los items del menú según el rol del usuario.
+
+#### Estructura
+
+```typescript
+export type IconKey = 'plus' | 'list' | 'folder' | 'users' | 'barChart' | 'settings'
+
+export type NavigationItem = {
+  label: string      // Texto visible en el menú
+  href: string       // Ruta de navegación
+  icon: IconKey      // Icono a mostrar
+}
+
+export type UserRole = 'cliente' | 'empleado' | 'admin'
+
+export const NAVIGATION_ITEMS_BY_ROLE: Record<UserRole, NavigationItem[]>
+```
+
+#### Navegación por Rol
+
+**Cliente:**
+- Crear Reclamo → `/cliente/crear-reclamo`
+- Mis Reclamos → `/cliente/reclamos`
+- Crear Proyecto → `/cliente/crear-proyecto`
+- Mis Proyectos → `/cliente/proyectos`
+
+**Empleado:**
+- Reclamos de mi Área → `/reclamos-area`
+- Reportes → `/reportes`
+
+**Administrador:**
+- (Actualmente vacío, pendiente de implementación)
+
+#### Uso en Componentes
+
+El componente `Sidebar` (`/src/components/layout/sidebar.tsx`) usa estas constantes para renderizar el menú automáticamente según el rol del usuario autenticado:
+
+```typescript
+import { NAVIGATION_ITEMS_BY_ROLE } from "@/constants/navigation"
+import { useAuth } from "@/hooks/use-auth"
+
+const { user } = useAuth()
+const roleKey = user?.role as keyof typeof NAVIGATION_ITEMS_BY_ROLE
+const navigationItems = NAVIGATION_ITEMS_BY_ROLE[roleKey]
+```
+
+#### Reglas para Agregar Nuevas Rutas
+
+1. **Agregar nueva ruta de navegación**:
+   - Editar `src/constants/navigation.ts`
+   - Agregar el item en el array correspondiente al rol (`cliente`, `empleado`, o `admin`)
+   - Asegurar que el `href` coincida con la ruta creada en `/src/app/`
+
+2. **Iconos disponibles**:
+   - Los iconos están definidos en el componente `Sidebar`
+   - Iconos actuales: `plus`, `list`, `folder`, `users`, `barChart`, `settings`
+   - Para agregar un nuevo icono, actualizar tanto el tipo `IconKey` como el objeto `Icons` en `sidebar.tsx`
+
+3. **Mantener consistencia**:
+   - Las rutas deben seguir el patrón: `/{rol}/{funcionalidad}`
+   - Ejemplos: `/cliente/proyectos`, `/empleado/reportes`, `/admin/usuarios`
+
+---
+
 ## 🔌 API Client Global - **MUY IMPORTANTE**
 
 ### ¿Qué es?

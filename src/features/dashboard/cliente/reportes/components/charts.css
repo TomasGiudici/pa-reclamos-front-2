@@ -1,0 +1,25 @@
+/* Forzar colores blancos/claros en todos los textos de los gráficos */
+.recharts-text,
+.recharts-cartesian-axis-tick text,
+.recharts-label text,
+.recharts-pie-label-text,
+text[text-anchor] {
+  fill: #E5E7EB !important;
+}
+
+/* Labels específicos de valores deben ser blancos */
+.recharts-label,
+.recharts-pie-label-text {
+  fill: #FFFFFF !important;
+}
+
+/* Grilla semi-transparente */
+.recharts-cartesian-grid line {
+  stroke: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Líneas de los ejes */
+.recharts-cartesian-axis-line {
+  stroke: #6B7280 !important;
+}
+

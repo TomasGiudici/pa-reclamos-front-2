@@ -32,6 +32,11 @@ export const NAVIGATION_ITEMS_BY_ROLE: Record<UserRole, NavigationItem[]> = {
       href: "/cliente/proyectos",
       icon: "folder",
     },
+    {
+      label: "Reportes",
+      href: "/cliente/reportes",
+      icon: "barChart",
+    }
   ],
   empleado: [
     {
