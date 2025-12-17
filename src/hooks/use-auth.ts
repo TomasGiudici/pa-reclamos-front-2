@@ -1,15 +1,20 @@
+"use client";
 
-// mock
+import { useAuthStore } from "@/stores/auth";
+
 export function useAuth() {
+  const { auth, user, clearAuth, _hasHydrated } = useAuthStore();
+
+  const logout = () => {
+    clearAuth();
+    // Note: Auth data is now automatically cleared from localStorage by the store
+  };
+
   return {
-    logout: () => {
-      console.log("logout")
-    },
-    user: {
-      id: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      role: "admin",
-    },
-  }
+    user,
+    token: auth?.access_token,
+    isAuthenticated: !!auth && !!user,
+    hasHydrated: _hasHydrated,
+    logout,
+  };
 }

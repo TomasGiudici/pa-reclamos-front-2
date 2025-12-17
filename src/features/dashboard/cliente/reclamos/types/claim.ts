@@ -1,6 +1,6 @@
 export type ClaimType = "product_failure" | "service_question" | "incident"
-export type Priority = "high" | "medium" | "low"
-export type Criticality = "high" | "medium" | "low"
+export type Priority = "ALTA" | "MEDIA" | "BAJA"
+export type Criticality = "ALTA" | "MEDIA" | "BAJA"
 export type ClaimStatus = "pending" | "in_progress" | "resolved" | "rejected"
 
 export interface Claim {

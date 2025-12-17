@@ -5,15 +5,15 @@ export const CLAIM_TYPES = [
 ] as const
 
 export const PRIORITY_OPTIONS = [
-  { value: "high", label: "Alta" },
-  { value: "medium", label: "Media" },
-  { value: "low", label: "Baja" },
+  { value: "ALTA", label: "Alta" },
+  { value: "MEDIA", label: "Media" },
+  { value: "BAJA", label: "Baja" },
 ] as const
 
 export const CRITICALITY_OPTIONS = [
-  { value: "high", label: "Alta" },
-  { value: "medium", label: "Media" },
-  { value: "low", label: "Baja" },
+  { value: "ALTA", label: "Alta" },
+  { value: "MEDIA", label: "Media" },
+  { value: "BAJA", label: "Baja" },
 ] as const
 
 export const STATUS_LABELS: Record<string, string> = {

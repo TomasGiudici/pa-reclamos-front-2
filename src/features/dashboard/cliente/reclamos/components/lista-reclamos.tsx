@@ -4,7 +4,7 @@ import { useClaims } from "../hooks/use-claims"
 import { ClaimCard } from "./claim-card"
 
 export function ListaReclamos() {
-  const { claims, isLoading, error } = useClaims()
+  const { claims, isLoading, error, isCreating, createError } = useClaims()
 
   if (isLoading) {
     return (
@@ -32,7 +32,6 @@ export function ListaReclamos() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-foreground mb-6">Mis Reclamos</h2>
       <div className="grid gap-4">
         {claims.map((claim) => (
           <ClaimCard key={claim.id} claim={claim} />

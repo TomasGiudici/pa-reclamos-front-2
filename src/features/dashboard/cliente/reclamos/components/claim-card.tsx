@@ -14,9 +14,9 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
-  high: "bg-red-500/20 text-red-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  low: "bg-green-500/20 text-green-400",
+  ALTA: "bg-red-500/20 text-red-400",
+  MEDIA: "bg-yellow-500/20 text-yellow-400",
+  BAJA: "bg-green-500/20 text-green-400",
 }
 
 export function ClaimCard({ claim }: ClaimCardProps) {
@@ -33,7 +33,7 @@ export function ClaimCard({ claim }: ClaimCardProps) {
 
       <div className="flex items-center gap-3 flex-wrap">
         <span className={`px-2 py-1 rounded text-xs font-medium ${PRIORITY_COLORS[claim.priority]}`}>
-          Prioridad: {claim.priority === "high" ? "Alta" : claim.priority === "medium" ? "Media" : "Baja"}
+          Prioridad: {claim.priority === "ALTA" ? "Alta" : claim.priority === "MEDIA" ? "Media" : "Baja"}
         </span>
         <span className="text-xs text-muted-foreground">{formatDate(claim.createdAt)}</span>
       </div>

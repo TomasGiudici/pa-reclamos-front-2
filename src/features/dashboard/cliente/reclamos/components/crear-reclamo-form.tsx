@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { toast } from "sonner"
 import { CRITICALITY_OPTIONS, PRIORITY_OPTIONS } from "../constants/claim-options"
 import { useAreas } from "../hooks/use-areas"
 import { useCrearReclamo } from "../hooks/use-crear-reclamo"
@@ -50,9 +51,13 @@ export function CrearReclamoForm() {
     try {
       await crearReclamo(payload)
       setFormData(INITIAL_STATE)
-      // Aquí podrías agregar una notificación de éxito o redirección
+      toast.success("Reclamo creado exitosamente", {
+        description: "Tu reclamo ha sido registrado y será revisado pronto."
+      })
     } catch (error) {
-      // El error es manejado por TanStack Query
+      toast.error("Error al crear reclamo", {
+        description: "No se pudo crear el reclamo. Por favor, intenta nuevamente."
+      })
       console.error("Error al crear reclamo:", error)
     }
   }

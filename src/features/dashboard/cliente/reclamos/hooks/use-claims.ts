@@ -1,49 +1,41 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { claimService } from "../services/claim-service"
+import { useAuthStore } from "@/stores/auth"
 import type { Claim, CreateClaimPayload } from "../types/claim"
 
 export function useClaims() {
-  const [claims, setClaims] = useState<Claim[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const token = useAuthStore((state) => state.auth?.access_token)
 
-  const fetchClaims = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await claimService.getClaims()
-      setClaims(data)
-      setError(null)
-    } catch (err) {
-      setError("Error al cargar los reclamos")
-      console.error(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
+  const query = useQuery<Claim[]>({
+    queryKey: ["claims"],
+    queryFn: async () => {
+      if (!token) throw new Error("No authentication token")
+      return claimService.getClaims(token)
+    },
+    enabled: !!token,
+  })
 
-  useEffect(() => {
-    fetchClaims()
-  }, [fetchClaims])
+  const queryClient = useQueryClient()
 
-  const createClaim = async (payload: CreateClaimPayload): Promise<boolean> => {
-    try {
-      const newClaim = await claimService.createClaim(payload)
-      setClaims((prev) => [newClaim, ...prev])
-      return true
-    } catch (err) {
-      setError("Error al crear el reclamo")
-      console.error(err)
-      return false
-    }
-  }
+  const createMutation = useMutation({
+    mutationFn: async (payload: CreateClaimPayload) => {
+      if (!token) throw new Error("No authentication token")
+      return claimService.createClaim(payload, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["claims"] })
+    },
+  })
 
   return {
-    claims,
-    isLoading,
-    error,
-    createClaim,
-    refetch: fetchClaims,
+    claims: query.data || [],
+    isLoading: query.isLoading,
+    error: query.error?.message || null,
+    createClaim: createMutation.mutateAsync,
+    isCreating: createMutation.isPending,
+    createError: createMutation.error?.message || null,
+    refetch: query.refetch,
   }
 }

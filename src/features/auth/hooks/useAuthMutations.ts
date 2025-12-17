@@ -3,7 +3,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { api } from "@/lib/api"
 import { useAuthStore } from "@/stores/auth"
-import { saveAuthToken } from "@/utils/auth-storage"
 import type { AuthData } from "../types/auth"
 
 export interface LoginCredentials {
@@ -28,8 +27,8 @@ export function useLoginMutation() {
   return useMutation<AuthData, Error, LoginCredentials>({
     mutationFn: (credentials) => api.auth.login(credentials),
     onSuccess: (data) => {
+      // Set the auth data (JWT contains basic user info)
       setAuth(data)
-      saveAuthToken(data.access_token)
     },
   })
 }
