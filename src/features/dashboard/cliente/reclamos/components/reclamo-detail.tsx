@@ -4,6 +4,8 @@ import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "../constants/claim-options"
 import { useCambioEstado } from "../hooks/use-cambio-estado"
 import { useReclamoDetail } from "../hooks/use-reclamo-detail"
+import { useProyectos } from "../hooks/use-proyectos"
+import { useMemo } from "react"
 
 interface ReclamoDetailProps {
   reclamoId: string
@@ -34,6 +36,7 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
     error: cambiosError,
   } = useCambioEstado(reclamoId)
 
+
   if (reclamoLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -63,6 +66,9 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
             </h2>
             <p className="text-xs text-muted-foreground font-mono mb-4">
               ID: {reclamo.id}
+            </p>
+            <p className="text-xs text-muted-foreground font-mono mb-4">
+              Proyecto: {reclamo.projectName}
             </p>
             <p className="text-muted-foreground">{reclamo.description}</p>
           </div>

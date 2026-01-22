@@ -15,13 +15,17 @@ export interface Claim {
   createdAt: Date
   updatedAt: Date
   userId: string
+  projectName: string
+  clientName: string
 }
 
 export interface CreateClaimPayload {
   tipoReclamoId: string
-  proyectoId: string
+  proyecto: string
   areaId: string
   descripcion: string
   prioridad: string
   criticidad: string
+  cliente: string
+  proyectoId: string
 }
