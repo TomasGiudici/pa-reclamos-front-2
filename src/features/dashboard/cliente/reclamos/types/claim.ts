@@ -16,10 +16,7 @@ export interface Claim {
   updatedAt: Date
   userId: string
   projectName: string
-  tipoReclamoId?: string
-  areaId?: string
 }
-
 
 
 export interface CreateClaimPayload {

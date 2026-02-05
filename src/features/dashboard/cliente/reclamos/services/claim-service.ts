@@ -16,8 +16,6 @@ function transformApiClaim(apiClaim: any): Claim {
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
     userId: apiClaim.proyecto?.clienteId || "",
     projectName: apiClaim.proyecto?.nombre || "Sin proyecto",
-    tipoReclamoId: apiClaim.tipoReclamo?.id || undefined,
-    areaId: apiClaim.areaId || undefined,
   }
 }
 
