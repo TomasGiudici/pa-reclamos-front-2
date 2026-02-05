@@ -9,18 +9,19 @@ interface ApiClaimResponse {
   id: string
   descripcion?: string
   tipoReclamo?: {
+    id?: string
     nombre?: string
   }
   prioridad?: string
   criticidad?: string
   estado?: string
-  archivo?: string
   createdAt?: string
   updatedAt?: string
   proyecto?: {
     clienteId?: string
     nombre?: string
   }
+  areaId?: string
 }
 
 function mapApiStatus(apiStatus: string): Claim["status"] {
@@ -49,17 +50,15 @@ function mapApiCriticality(apiCriticality?: string): Claim["criticality"] {
 function transformApiClaim(apiClaim: ApiClaimResponse): Claim {
   return {
     id: apiClaim.id,
-    title: apiClaim.descripcion?.substring(0, 50) + "..." || "Reclamo sin título",
     description: apiClaim.descripcion || "",
-    type: "incident",
+    type: apiClaim.tipoReclamo?.id || "N/A",
     priority: mapApiPriority(apiClaim.prioridad),
     criticality: mapApiCriticality(apiClaim.criticidad),
-    status: mapApiStatus(apiClaim.estado || "PENDIENTE"),
-    attachments: apiClaim.archivo ? [apiClaim.archivo] : [],
+    status: mapApiStatus(apiClaim.estado || "N/A"),
     createdAt: new Date(apiClaim.createdAt || Date.now()),
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
-    userId: apiClaim.proyecto?.clienteId || "",
-    projectName: apiClaim.proyecto?.nombre || "Sin proyecto",
+    userId: apiClaim.proyecto?.clienteId || "N/A",
+    projectName: apiClaim.proyecto?.nombre || "N/A",
   }
 }
 
@@ -72,6 +71,7 @@ export function useReclamoDetail(reclamoId: string) {
       if (!token) throw new Error("No authentication token")
 
       const response = await api.reclamos.obtenerPorId(reclamoId, token)
+      console.log({ response })
       return transformApiClaim(response as ApiClaimResponse)
     },
     enabled: !!token && !!reclamoId,
