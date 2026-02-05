@@ -65,7 +65,6 @@ export function UpdateEstadoYAreaForm({ reclamoId }: { reclamoId: string }) {
             { label: "Pendiente", value: "PENDIENTE" },
             { label: "En Proceso", value: "EN_PROCESO" },
             { label: "Resuelto", value: "RESUELTO" },
-            { label: "Rechazado", value: "RECHAZADO" },
           ]}
         />
 

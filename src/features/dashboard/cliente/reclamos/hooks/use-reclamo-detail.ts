@@ -1,30 +1,79 @@
 "use client"
 
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { Claim } from "../types/claim"
-import { claimService } from "../services/claim-service";
-import { useAuthStore } from "@/stores/auth";
+import { useQuery } from "@tanstack/react-query"
+import { api } from "@/lib/api"
+import { useAuthStore } from "@/stores/auth"
+import type { Claim } from "../types/claim"
+
+interface ApiClaimResponse {
+  id: string
+  descripcion?: string
+  tipoReclamo?: {
+    nombre?: string
+  }
+  prioridad?: string
+  criticidad?: string
+  estado?: string
+  archivo?: string
+  createdAt?: string
+  updatedAt?: string
+  proyecto?: {
+    clienteId?: string
+    nombre?: string
+  }
+}
+
+function mapApiStatus(apiStatus: string): Claim["status"] {
+  const statusMap: Record<string, Claim["status"]> = {
+    PENDIENTE: "pending",
+    EN_PROCESO: "in_progress",
+    RESUELTO: "resolved",
+  }
+  return statusMap[apiStatus] || "pending"
+}
+
+function mapApiPriority(apiPriority?: string): Claim["priority"] {
+  if (apiPriority === "ALTA" || apiPriority === "MEDIA" || apiPriority === "BAJA") {
+    return apiPriority
+  }
+  return "MEDIA"
+}
+
+function mapApiCriticality(apiCriticality?: string): Claim["criticality"] {
+  if (apiCriticality === "ALTA" || apiCriticality === "MEDIA" || apiCriticality === "BAJA") {
+    return apiCriticality
+  }
+  return "MEDIA"
+}
+
+function transformApiClaim(apiClaim: ApiClaimResponse): Claim {
+  return {
+    id: apiClaim.id,
+    title: apiClaim.descripcion?.substring(0, 50) + "..." || "Reclamo sin título",
+    description: apiClaim.descripcion || "",
+    type: "incident",
+    priority: mapApiPriority(apiClaim.prioridad),
+    criticality: mapApiCriticality(apiClaim.criticidad),
+    status: mapApiStatus(apiClaim.estado || "PENDIENTE"),
+    attachments: apiClaim.archivo ? [apiClaim.archivo] : [],
+    createdAt: new Date(apiClaim.createdAt || Date.now()),
+    updatedAt: new Date(apiClaim.updatedAt || Date.now()),
+    userId: apiClaim.proyecto?.clienteId || "",
+    projectName: apiClaim.proyecto?.nombre || "Sin proyecto",
+  }
+}
 
 export function useReclamoDetail(reclamoId: string) {
-  const queryClient = useQueryClient();
-  // Accedemos directamente a state.user que está en la raíz de la store
-  const userRole = useAuthStore((state) => state.user?.role); 
+  const token = useAuthStore((state) => state.auth?.access_token)
 
   return useQuery<Claim>({
     queryKey: ["reclamo", reclamoId],
     queryFn: async () => {
-      // Usamos el rol para decidir qué caché mirar
-      const cacheKey = userRole === "empleado" ? ["claims", "area"] : ["claims"];
+      if (!token) throw new Error("No authentication token")
 
-      const claims = queryClient.getQueryData<Claim[]>(cacheKey);
-      const reclamo = claims?.find((c) => c.id === reclamoId);
-
-      if (!reclamo) {
-        throw new Error("Reclamo no encontrado en la memoria local. Por favor, regresa a la lista.");
-      }
-
-      return reclamo;
+      const response = await api.reclamos.obtenerPorId(reclamoId, token)
+      return transformApiClaim(response as ApiClaimResponse)
     },
-    enabled: !!reclamoId && !!userRole,
-  });
+    enabled: !!token && !!reclamoId,
+  })
 }
