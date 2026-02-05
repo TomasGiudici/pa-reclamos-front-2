@@ -230,6 +230,12 @@ export const api = {
         token,
       }),
 
+    obtenerPorId: (id: string, token: string) =>
+      request(`/reclamo/${id}`, {
+        method: "GET",
+        token,
+      }),
+
     filtros: (
       params: {
         estado?: string

@@ -65,6 +65,9 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
               ID: {reclamo.id}
             </p>
             <p className="text-muted-foreground">{reclamo.description}</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Proyecto: {reclamo.projectName}
+            </p>
           </div>
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${STATUS_COLORS[reclamo.status]}`}
@@ -166,6 +169,8 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
                       {cambio.fechaFin && (
                         <p>Fin: {formatDateTime(new Date(cambio.fechaFin))}</p>
                       )}
+                      <p>Área: {cambio.area?.nombre || "Sin área"}</p>
+                      <p>Usuario: {cambio.usuario?.nombre || "Sin usuario"}</p>
                     </div>
                   </div>
                 </div>
