@@ -4,6 +4,7 @@ import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "../constants/claim-options"
 import { useCambioEstado } from "../hooks/use-cambio-estado"
 import { useReclamoDetail } from "../hooks/use-reclamo-detail"
+import { ActualizarReclamoForm } from "./actualizar-reclamo-form"
 
 interface ReclamoDetailProps {
   reclamoId: string
@@ -33,6 +34,8 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
     isLoading: cambiosLoading,
     error: cambiosError,
   } = useCambioEstado(reclamoId)
+
+  const currentCambioEstado = cambiosEstado.find((cambio) => !cambio.fechaFin) || cambiosEstado[0]
 
   if (reclamoLoading) {
     return (
@@ -102,6 +105,19 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
           </span>
         </div>
       </div>
+
+      {reclamo.status !== "resolved" && (
+        <ActualizarReclamoForm
+          reclamoId={reclamoId}
+          initialValues={{
+            tipoReclamoId: reclamo.tipoReclamoId,
+            areaId: reclamo.areaId || currentCambioEstado?.area?.id,
+            descripcion: reclamo.description,
+            prioridad: reclamo.priority,
+            criticidad: reclamo.criticality,
+          }}
+        />
+      )}
 
       {/* State Change History */}
       <div className="space-y-4">

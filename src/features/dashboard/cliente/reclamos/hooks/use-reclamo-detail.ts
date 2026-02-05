@@ -9,6 +9,7 @@ interface ApiClaimResponse {
   id: string
   descripcion?: string
   tipoReclamo?: {
+    id?: string
     nombre?: string
   }
   prioridad?: string
