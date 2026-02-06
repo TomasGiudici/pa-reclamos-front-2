@@ -1,16 +1,15 @@
 "use client"
 
+import type React from "react"
 import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "@/features/dashboard/cliente/reclamos/constants/claim-options"
 import { useCambioEstado, type CambioEstado } from "@/features/dashboard/cliente/reclamos/hooks/use-cambio-estado"
 import { useReclamoDetail } from "@/features/dashboard/cliente/reclamos/hooks/use-reclamo-detail"
 import type { Claim } from "@/features/dashboard/cliente/reclamos/types/claim"
-import { CambioEstadoForm } from "./cambio-estado-form"
-import { ReasignarAreaForm } from "./reasignar-area-form"
 
 interface ReclamoDetailShellProps {
   reclamoId: string
-  mode?: "cambio-estado" | "reasignar-area"
+  renderForm?: (reclamo: Claim, currentCambioEstado?: CambioEstado) => React.ReactNode
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -25,7 +24,7 @@ const PRIORITY_COLORS: Record<string, string> = {
   BAJA: "bg-green-500/20 text-green-400",
 }
 
-export function ReclamoDetailShell({ reclamoId, mode }: ReclamoDetailShellProps) {
+export function ReclamoDetailShell({ reclamoId, renderForm }: ReclamoDetailShellProps) {
   const {
     data: reclamo,
     isLoading: reclamoLoading,
@@ -38,7 +37,6 @@ export function ReclamoDetailShell({ reclamoId, mode }: ReclamoDetailShellProps)
   } = useCambioEstado(reclamoId)
 
   const currentCambioEstado = cambiosEstado.find((cambio) => !cambio.fechaFin) || cambiosEstado[0]
-  const currentAreaId = reclamo?.areaId || currentCambioEstado?.area?.id
 
   if (reclamoLoading) {
     return (
@@ -102,13 +100,7 @@ export function ReclamoDetailShell({ reclamoId, mode }: ReclamoDetailShellProps)
         </div>
       </div>
 
-      {reclamo && mode === "cambio-estado" && (
-        <CambioEstadoForm reclamoId={reclamoId} currentStatus={reclamo.status} />
-      )}
-
-      {reclamo && mode === "reasignar-area" && (
-        <ReasignarAreaForm reclamoId={reclamoId} currentAreaId={currentAreaId} />
-      )}
+      {renderForm ? renderForm(reclamo, currentCambioEstado) : null}
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">

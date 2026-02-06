@@ -54,6 +54,7 @@ async function request<TResponse = unknown>(
 
   if (token) {
     headers.Authorization = `Bearer ${token}`
+    console.log("Usando token de autorización en request a", path)
   }
 
   let res: Response | null = null
