@@ -54,7 +54,6 @@ async function request<TResponse = unknown>(
 
   if (token) {
     headers.Authorization = `Bearer ${token}`
-    console.log("Usando token de autorización en request a", path)
   }
 
   let res: Response | null = null
@@ -222,7 +221,7 @@ export const api = {
       }),
     
     updateEstado(id: string, data: any, token: string) {
-      return fetch(`${BASE_URL}/reclamo/update-estado/${id}`, {
+      return fetch(`${BASE_URL}/reclamo/change-estado/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

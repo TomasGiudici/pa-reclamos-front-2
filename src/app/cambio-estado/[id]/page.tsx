@@ -15,12 +15,8 @@ export default async function CambioEstadoPage({ params }: CambioEstadoPageProps
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Cambiar estado</h1>
       </div>
-      <ReclamoDetailShell
-        reclamoId={id}
-        renderForm={(reclamo) => (
-          <CambioEstadoForm reclamoId={id} currentStatus={reclamo.status} />
-        )}
-      />
+
+      <ReclamoDetailShell reclamoId={id} variant="cambio-estado" />
     </div>
   )
 }

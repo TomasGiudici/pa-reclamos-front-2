@@ -15,15 +15,7 @@ export default async function ReasignarAreaPage({ params }: ReasignarAreaPagePro
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Reasignar área</h1>
       </div>
-      <ReclamoDetailShell
-        reclamoId={id}
-        renderForm={(reclamo, currentCambioEstado) => (
-          <ReasignarAreaForm
-            reclamoId={id}
-            currentAreaId={reclamo.areaId || currentCambioEstado?.area?.id}
-          />
-        )}
-      />
+      <ReclamoDetailShell reclamoId={id} variant="reasignar-area" />
     </div>
   )
 }

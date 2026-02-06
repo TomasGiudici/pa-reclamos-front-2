@@ -1,15 +1,15 @@
 "use client"
 
-import type React from "react"
 import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "@/features/dashboard/cliente/reclamos/constants/claim-options"
 import { useCambioEstado, type CambioEstado } from "@/features/dashboard/cliente/reclamos/hooks/use-cambio-estado"
 import { useReclamoDetail } from "@/features/dashboard/cliente/reclamos/hooks/use-reclamo-detail"
-import type { Claim } from "@/features/dashboard/cliente/reclamos/types/claim"
+import { CambioEstadoForm } from "@/features/dashboard/empleado/reclamos/components/cambio-estado-form"
+import { ReasignarAreaForm } from "./reasignar-area-form"
 
 interface ReclamoDetailShellProps {
   reclamoId: string
-  renderForm?: (reclamo: Claim, currentCambioEstado?: CambioEstado) => React.ReactNode
+  variant: "cambio-estado" | "reasignar-area"
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -24,7 +24,7 @@ const PRIORITY_COLORS: Record<string, string> = {
   BAJA: "bg-green-500/20 text-green-400",
 }
 
-export function ReclamoDetailShell({ reclamoId, renderForm }: ReclamoDetailShellProps) {
+export function ReclamoDetailShell({ reclamoId, variant} : ReclamoDetailShellProps) {
   const {
     data: reclamo,
     isLoading: reclamoLoading,
@@ -100,7 +100,16 @@ export function ReclamoDetailShell({ reclamoId, renderForm }: ReclamoDetailShell
         </div>
       </div>
 
-      {renderForm ? renderForm(reclamo, currentCambioEstado) : null}
+      {variant === "cambio-estado" && (
+        <CambioEstadoForm reclamoId={reclamoId} currentStatus={reclamo.status} />
+      )}
+
+      {variant === "reasignar-area" && (
+        <ReasignarAreaForm
+          reclamoId={reclamoId}
+          currentAreaId={reclamo.areaId || currentCambioEstado?.area?.id}
+        />
+      )}
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">
