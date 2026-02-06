@@ -1,16 +1,14 @@
-"use client"
-
-import { useParams } from "next/navigation"
 import { CambioEstadoForm } from "@/features/dashboard/empleado/reclamos/components/cambio-estado-form"
 import { ReclamoDetailShell } from "@/features/dashboard/empleado/reclamos/components/reclamo-detail-shell"
 
-export default function CambioEstadoPage() {
-  const params = useParams()
-  const id = Array.isArray(params?.id) ? params.id[0] : params?.id
+interface CambioEstadoPageProps {
+  params: Promise<{
+    id: string
+  }>
+}
 
-  if (!id) {
-    return null
-  }
+export default async function CambioEstadoPage({ params }: CambioEstadoPageProps) {
+  const { id } = await params
 
   return (
     <div className="space-y-6">
